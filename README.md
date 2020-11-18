@@ -1,6 +1,7 @@
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Argo Workflows](#argo-workflows)
    * [Setup](#setup)
       * [Cluster](#cluster)
@@ -8,8 +9,10 @@ Table of Contents
       * [Test](#test)
       * [CLI](#cli)
       * [Demo namespace](#demo-namespace)
+      * [Setup Artifact repo](#setup-artifact-repo)
    * [Running workflows](#running-workflows)
       * [Hello world](#hello-world)
+      * [Artifact passing](#artifact-passing)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -92,6 +95,32 @@ kubectl create ns demo
 kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=demo:default -n demo 
 ```
 
+## Setup Artifact repo
+
+```
+kubectl create ns minio
+helm repo add minio https://helm.min.io/
+helm install --namespace minio --generate-name minio/minio
+```
+
+UI
+
+```
+kubectl -n minio port-forward deployment/minio-1605732143 8002:9000
+```
+
+available at
+
+* http://localhost:8002
+
+Config
+
+```
+$ kubectl -n minio get secret minio-1605732143 -ogo-template='{{range $k,$v:=.data}}{{printf "%s = %s\n" $k ($v|base64decode)}}{{end}}'
+accesskey = XXXXXXXXXXXXXXX
+secretkey = YYYYYYYYYYYYYYY
+```
+
 # Running workflows
 
 ## Hello world
@@ -105,3 +134,57 @@ Log output
 ```
 argo logs @latest 
 ```
+
+## Artifact passing
+
+Using the Minio UI create a bucket called demo2
+
+```
+kubectl apply -f - <<END
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-repositories
+  namespace: demo
+data:
+  minio: |
+    s3:
+      bucket: demo2
+      endpoint: minio-1605732143.minio:9000
+      insecure: true
+      accessKeySecret:
+        name: my-minio-cred
+        key: accesskey
+      secretKeySecret:
+        name: my-minio-cred
+        key: secretkey
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-minio-cred
+  namespace: demo
+stringData:
+  accesskey: XXXXXXXXXXXXXXX
+  secretkey: YYYYYYYYYYYYYYY
+END
+```
+
+Create YAML extract that points the workflow at the minio bucket
+
+```
+cat <<END > repo.yaml
+spec:
+  artifactRepositoryRef:
+    key: minio
+END
+
+```
+
+Now run the workflow, merging in the repo snippet
+
+```
+curl -L https://raw.githubusercontent.com/argoproj/argo/master/examples/artifact-passing.yaml | yq m - repo.yaml | argo submit --watch -
+```
+
