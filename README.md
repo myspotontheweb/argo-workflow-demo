@@ -123,6 +123,12 @@ secretkey = YYYYYYYYYYYYYYY
 
 # Running workflows
 
+The following examples are all run in the demo namespace
+
+```
+kubens demo
+```
+
 ## Hello world
 
 Source workflow
