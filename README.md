@@ -1,8 +1,25 @@
-<<<<<<< HEAD
-# argo-workflow-demo
-A demo app describing how to setup and use Argo Workflows
-=======
+Table of Contents
+=================
+
+   * [Argo Workflows](#argo-workflows)
+   * [Setup](#setup)
+      * [Cluster](#cluster)
+      * [Installation](#installation)
+      * [Test](#test)
+      * [CLI](#cli)
+      * [Demo namespace](#demo-namespace)
+   * [Running workflows](#running-workflows)
+      * [Hello world](#hello-world)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
 # Argo Workflows
+
+Documentation
+
+* [Argo workflows](https://argoproj.github.io/argo/)
+* [Argo events](https://argoproj.github.io/argo-events/)
+* [Argo Install manifests](https://github.com/argoproj/argo/tree/stable/manifests)
 
 # Setup
 
@@ -47,7 +64,24 @@ WebUI available at:
 
 ## CLI
 
-TODO
+```
+VERSION=2.11.7
+
+# Download the binary
+curl -sLO https://github.com/argoproj/argo/releases/download/v$VERSION/argo-linux-amd64.gz
+
+# Unzip
+gunzip argo-linux-amd64.gz
+
+# Make binary executable
+chmod +x argo-linux-amd64
+
+# Move binary to path
+sudo mv ./argo-linux-amd64 /usr/local/bin/argo
+
+# Test installation
+argo version
+```
 
 ## Demo namespace
 
@@ -71,4 +105,3 @@ Log output
 ```
 argo logs @latest 
 ```
->>>>>>> Init
