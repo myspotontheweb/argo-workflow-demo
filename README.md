@@ -125,6 +125,10 @@ secretkey = YYYYYYYYYYYYYYY
 
 ## Hello world
 
+Source workflow
+
+* [examples/hello-world.yaml](https://github.com/argoproj/argo/blob/master/examples/hello-world.yaml)
+
 ```
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
@@ -136,6 +140,10 @@ argo logs @latest
 ```
 
 ## Artifact passing
+
+Source workflow
+
+* [examples/artifact-passing.yaml](https://github.com/argoproj/argo/blob/master/examples/artifact-passing.yaml)
 
 Using the Minio UI create a bucket called demo2
 
