@@ -219,6 +219,6 @@ END
 Now run the workflow, merging in the repo snippet
 
 ```
-curl -L https://raw.githubusercontent.com/argoproj/argo/master/examples/artifact-passing.yaml | yq m - repo.yaml | argo submit --watch -
+curl -sL https://raw.githubusercontent.com/argoproj/argo/master/examples/artifact-passing.yaml | yq m - repo.yaml | argo submit --watch -
 ```
 
