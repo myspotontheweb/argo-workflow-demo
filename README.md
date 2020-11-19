@@ -30,7 +30,6 @@ Documentation
 
 ```
 minikube start --driver=docker --kubernetes-version=v1.16.15
-minikube addons enable ingress
 ```
 
 ## Installation
@@ -98,28 +97,35 @@ kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=de
 ## Setup Artifact repo
 
 ```
-kubectl create ns minio
 helm repo add minio https://helm.min.io/
-helm install --namespace minio --generate-name minio/minio
+
+kubectl create ns minio
+
+cat <<END > values.yaml
+accessKey: XXXXXXXXXX
+secretKey: YYYYYYYYYY
+buckets:
+  - name: demo1
+    policy: none
+    purge: false
+  - name: demo2
+    policy: none
+    purge: false
+END
+
+helm install minio minio/minio -n minio -f values.yaml
 ```
 
 UI
 
 ```
-kubectl -n minio port-forward deployment/minio-1605732143 8002:9000
+kubectl -n minio port-forward deployment/minio 8002:9000
 ```
 
 available at
 
 * http://localhost:8002
 
-Config
-
-```
-$ kubectl -n minio get secret minio-1605732143 -ogo-template='{{range $k,$v:=.data}}{{printf "%s = %s\n" $k ($v|base64decode)}}{{end}}'
-accesskey = XXXXXXXXXXXXXXX
-secretkey = YYYYYYYYYYYYYYY
-```
 
 # Running workflows
 
@@ -167,7 +173,7 @@ data:
   minio: |
     s3:
       bucket: demo2
-      endpoint: minio-1605732143.minio:9000
+      endpoint: minio.minio:9000
       insecure: true
       accessKeySecret:
         name: my-minio-cred
@@ -182,8 +188,8 @@ metadata:
   name: my-minio-cred
   namespace: demo
 stringData:
-  accesskey: XXXXXXXXXXXXXXX
-  secretkey: YYYYYYYYYYYYYYY
+  accesskey: XXXXXXXXXX
+  secretkey: YYYYYYYYYY
 END
 ```
 
