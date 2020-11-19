@@ -4,6 +4,7 @@ Table of Contents
    * [Table of Contents](#table-of-contents)
    * [Argo Workflows](#argo-workflows)
    * [Setup](#setup)
+      * [Software](#software)
       * [Cluster](#cluster)
       * [Installation](#installation)
       * [Test](#test)
@@ -25,6 +26,17 @@ Documentation
 * [Argo Install manifests](https://github.com/argoproj/argo/tree/stable/manifests)
 
 # Setup
+
+## Software
+
+The following tools need to be installed in order to run this demo
+
+1. Docker
+1. [minikube](https://minikube.sigs.k8s.io/docs/start/)
+1. [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+1. [helm](https://helm.sh/)
+1. [kubens](https://kubectx.dev/)
+1. [yq](https://mikefarah.gitbook.io/yq/)
 
 ## Cluster
 
