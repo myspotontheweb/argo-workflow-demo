@@ -90,7 +90,7 @@ NAME                                  READY   AGE
 statefulset.apps/eventbus-nats-stan   3/3     5m32s
 ```
 
-The eventsource is running as a deploymen
+The eventsource is running as a deployment, watching events on the minio bucket
 
 ```
 $ kubectl get deployment -l eventsource-name=minio
@@ -98,7 +98,7 @@ NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/minio-eventsource-m7zl4   1/1     1            1           6m10s
 ```
 
-The sensor is also running as a deployment 
+The sensor is also running as a deployment and is responsible to triggering new workflows
 
 ```
 $ kubectl get deployment -l sensor-name=minio
