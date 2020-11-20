@@ -30,7 +30,14 @@ The following tools need to be installed in order to run this demo
 
 ```
 minikube start --driver=docker --kubernetes-version=v1.16.15
+minikube addons enable ingress
 ```
+
+## /etc/hosts
+
+Setup IP addresses for ingress end-points
+
+echo "$(minikube ip) argo.test minio.test" | sudo tee -a /etc/hosts
 
 ## Installation
 
@@ -46,18 +53,76 @@ Argo Events
 ```
 kubectl create namespace argo-events
 kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install.yaml
-kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml
 ```
 
-## Test
+Configure UI
 
 ```
-kubectl -n argo port-forward deployment/argo-server 8001:2746
+kubectl apply -f - <<END
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argo-server-ingress
+  namespace: argo
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: argo.test
+    http:
+      paths:
+      - backend:
+          serviceName: argo-server
+          servicePort: web
+        path: /
+END
 ```
 
 WebUI available at:
 
-* http://127.0.0.1:8001/
+* http://argo.test
+
+
+## Install Minio
+
+Add helm repo
+
+```
+helm repo add minio https://helm.min.io/
+```
+
+Helm chart custom settings
+
+```
+cat <<END > values.yaml
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+  - minio.test
+accessKey: XXXXXXXXXX
+secretKey: YYYYYYYYYY
+buckets:
+- name: demo1
+  policy: none
+  purge: false
+- name: demo2
+  policy: none
+  purge: false
+END
+```
+
+Install minio
+
+```
+kubectl create ns minio
+helm install minio minio/minio -n minio -f values.yaml
+```
+
+WebUI available at:
+
+* http://minio.test
 
 ## CLI
 
@@ -79,38 +144,6 @@ sudo mv ./argo-linux-amd64 /usr/local/bin/argo
 # Test installation
 argo version
 ```
-
-## Install Minio
-
-```
-helm repo add minio https://helm.min.io/
-
-kubectl create ns minio
-
-cat <<END > values.yaml
-accessKey: XXXXXXXXXX
-secretKey: YYYYYYYYYY
-buckets:
-  - name: demo1
-    policy: none
-    purge: false
-  - name: demo2
-    policy: none
-    purge: false
-END
-
-helm install minio minio/minio -n minio -f values.yaml
-```
-
-UI
-
-```
-kubectl -n minio port-forward deployment/minio 8002:9000
-```
-
-available at
-
-* http://localhost:8002
 
 
 ## Demo namespace
