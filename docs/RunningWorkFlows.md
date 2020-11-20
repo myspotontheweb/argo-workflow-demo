@@ -85,14 +85,9 @@ And observe how this triggers a workflow automatically
 The eventbus is a statefulset running 3 nats pods
 
 ```
-$ kubectl get statefulset,pods -l eventbus-name=nats
+$ kubectl get statefulset -l eventbus-name=nats
 NAME                                  READY   AGE
 statefulset.apps/eventbus-nats-stan   3/3     5m32s
-
-NAME                       READY   STATUS    RESTARTS   AGE
-pod/eventbus-nats-stan-0   2/2     Running   0          5m32s
-pod/eventbus-nats-stan-1   2/2     Running   0          5m23s
-pod/eventbus-nats-stan-2   2/2     Running   0          5m21s
 ```
 
 The eventsource is running as a deploymen
