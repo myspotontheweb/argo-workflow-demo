@@ -187,12 +187,25 @@ argo version
 
 ## Demo namespace
 
-Workflows need to run with additional privileges:
+This is a namespace designated for running workflows and needs some special setup
 
 ```
+#
+# Create the namespace
+#
 kubectl create ns demo
+
+#
+# Secret containing minio credentials
+#
+kubectl create secret generic artifact-repositories --from-literal=accessKey=XXXXXXXXXX --from-literal=secretKey=YYYYYYYYYY
+
+#
+# Add "admin" cluster role to the default service account
+#
 kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=demo:default -n demo 
 ```
 
-Alternatively create a dedicated service account for argo in the namespace
+Note:
 
+* Perhaps in production workflows should be using a dedicated service account
