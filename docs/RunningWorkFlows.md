@@ -49,7 +49,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: artifact-repositories
-  namespace: demo
 data:
   minio: |
     s3:
@@ -67,7 +66,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: my-minio-cred
-  namespace: demo
 stringData:
   accesskey: XXXXXXXXXX
   secretkey: YYYYYYYYYY
