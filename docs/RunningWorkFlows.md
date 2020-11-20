@@ -80,3 +80,55 @@ And observe how this triggers a workflow automatically
 
 * http://argo.test
 
+### Implementation Notes
+
+The eventbus is a statefulset running 3 nats pods
+
+```
+$ kubectl get statefulset,service,pods -l eventbus-name=nats
+NAME                                  READY   AGE
+statefulset.apps/eventbus-nats-stan   3/3     5m32s
+
+NAME                                TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                      AGE
+service/eventbus-nats-metrics-svc   ClusterIP   None         <none>        7777/TCP                     5m32s
+service/eventbus-nats-stan-svc      ClusterIP   None         <none>        4222/TCP,6222/TCP,8222/TCP   5m32s
+
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/eventbus-nats-stan-0   2/2     Running   0          5m32s
+pod/eventbus-nats-stan-1   2/2     Running   0          5m23s
+pod/eventbus-nats-stan-2   2/2     Running   0          5m21s
+```
+
+The eventsource is running as a deployment with a single pod
+
+```
+$ kubectl get deployment,pods -l eventsource-name=minio
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/minio-eventsource-m7zl4   1/1     1            1           6m10s
+
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/minio-eventsource-m7zl4-54f4ccc784-qjb8r   1/1     Running   0          4m13s
+```
+
+Finally the sensor is also running as a deployment 
+
+```
+$ kubectl get deployment,pods -l sensor-name=minio
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/minio-sensor-m4xlk   1/1     1            1           7m10s
+
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/minio-sensor-m4xlk-88949dc4b-crprb   1/1     Running   0          7m10s
+```
+
+### Logs
+
+Both the eventsource and sensor pods emit JSON log events, which can be monitored as follows
+
+```
+kubectl logs -l eventsource-name=minio -f | jq .
+```
+
+```
+kubectl logs -l sensor-name=minio -f | jq .
+```
