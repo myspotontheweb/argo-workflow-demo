@@ -160,14 +160,6 @@ data:
       secretKeySecret:
         name: artifact-repositories
         key: secretKey
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: artifact-repositories
-stringData:
-  accessKey: XXXXXXXXXX
-  secretKey: YYYYYYYYYY
 END
 ```
 
