@@ -3,6 +3,7 @@ kind: Sensor
 metadata:
   name: minio
 spec:
+  eventBusName: nats
   template:
     serviceAccountName: argo-events-sa
   dependencies:
