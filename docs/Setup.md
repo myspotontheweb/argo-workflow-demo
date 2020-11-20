@@ -5,13 +5,14 @@ Table of Contents
    * [Setup](#setup)
       * [Software](#software)
       * [Cluster](#cluster)
+      * [/etc/hosts](#etchosts)
       * [Installation](#installation)
-      * [Test](#test)
-      * [CLI](#cli)
       * [Install Minio](#install-minio)
+      * [CLI](#cli)
       * [Demo namespace](#demo-namespace)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
 
 # Setup
 
