@@ -13,5 +13,5 @@ Software development setup
 
 Example Workflows
 
-* [Running Workflows](RunningWorkFlows.md)
+* [Running Workflows](docs/RunningWorkFlows.md)
 
