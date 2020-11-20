@@ -1,14 +1,15 @@
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Setup](#setup)
       * [Software](#software)
       * [Cluster](#cluster)
       * [Installation](#installation)
       * [Test](#test)
       * [CLI](#cli)
+      * [Install Minio](#install-minio)
       * [Demo namespace](#demo-namespace)
-      * [Setup Artifact repo](#setup-artifact-repo)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -84,16 +85,7 @@ sudo mv ./argo-linux-amd64 /usr/local/bin/argo
 argo version
 ```
 
-## Demo namespace
-
-Working in the demo namespace
-
-```
-kubectl create ns demo
-kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=demo:default -n demo 
-```
-
-## Setup Artifact repo
+## Install Minio
 
 ```
 helm repo add minio https://helm.min.io/
@@ -125,4 +117,15 @@ available at
 
 * http://localhost:8002
 
+
+## Demo namespace
+
+Workflows need to run with additional privileges:
+
+```
+kubectl create ns demo
+kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=demo:default -n demo 
+```
+
+Alternatively create a dedicated service account for argo in the namespace
 
