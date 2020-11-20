@@ -59,22 +59,24 @@ curl -sL https://raw.githubusercontent.com/argoproj/argo/master/examples/artifac
 
 ## Argo Events
 
-Create a default eventbus locally
+In this example we're going to run a Nats based eventbus. This event bus can be shared by multiple eventsources and sensors 
 
 ```
 kubectl apply -f examples/argo-events/nats-eventbus.yaml
 ```
 
-Create an EventSource and secret
+Setup an Eventsource and Sensor which will trigger a Workflow
 
 ```
-kubectl apply -f examples/argo-events/my-minio-cred-secret.yaml
 kubectl apply -f examples/argo-events/minio-eventsource.yaml
-```
-
-Create a Sensor which runs a workflow 
-
-```
 kubectl apply -f examples/argo-events/minio-sensor.yaml
 ```
+
+Now upload a file into the repo2 bucket in minio
+
+* http://minio.test/minio/repo2/
+
+And observe how this triggers a workflow automatically
+
+* http://argo.test
 
