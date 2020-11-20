@@ -89,3 +89,24 @@ Now run the workflow, merging in the repo snippet
 curl -sL https://raw.githubusercontent.com/argoproj/argo/master/examples/artifact-passing.yaml | yq m - repo.yaml | argo submit --watch -
 ```
 
+## Argo Events
+
+Create a default eventbus locally
+
+```
+kubectl apply -f examples/argo-events/nats-eventbus.yaml
+```
+
+Create an EventSource and secret
+
+```
+kubectl apply -f examples/argo-events/my-minio-cred-secret.yaml
+kubectl apply -f examples/argo-events/minio-eventsource.yaml
+```
+
+Create a Sensor which runs a workflow 
+
+```
+kubectl apply -f examples/argo-events/minio-sensor.yaml
+```
+

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: minio
+spec:
+  eventBusName: nats
+  minio:
+    example:
+      bucket:
+        name: demo1
+      endpoint: minio.minio:9000
+      # Visit https://docs.minio.io/docs/minio-bucket-notification-guide.html
+      events:
+        - s3:ObjectCreated:Put
+        - s3:ObjectRemoved:Delete
+      insecure: true
+      accessKey:
+        name: my-minio-cred
+        key: accessKey
+      secretKey:
+        name: my-minio-cred
+        key: secretKey
