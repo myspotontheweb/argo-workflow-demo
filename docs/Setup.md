@@ -38,7 +38,9 @@ minikube addons enable ingress
 
 Setup IP addresses for ingress end-points
 
+```
 echo "$(minikube ip) argo.test minio.test" | sudo tee -a /etc/hosts
+```
 
 ## Installation
 
