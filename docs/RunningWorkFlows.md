@@ -40,41 +40,13 @@ Source workflow
 
 * [examples/artifact-passing.yaml](https://github.com/argoproj/argo/blob/master/examples/artifact-passing.yaml)
 
-Using the Minio UI create a bucket called demo2
-
-The following command will create a ConfigMap and Secret pointing at the bucket in minio
+This demo needs credentials to access the artifact repositories
 
 ```
-kubectl apply -f - <<END
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: artifact-repositories
-data:
-  minio: |
-    s3:
-      bucket: demo2
-      endpoint: minio.minio:9000
-      insecure: true
-      accessKeySecret:
-        name: my-minio-cred
-        key: accessKey
-      secretKeySecret:
-        name: my-minio-cred
-        key: secretKey
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-minio-cred
-stringData:
-  accessKey: XXXXXXXXXX
-  secretKey: YYYYYYYYYY
-END
+kubectl create secret generic artifact-repositories --from-literal=accessKey=XXXXXXXXXX --from-literal=secretKey=YYYYYYYYYY
 ```
 
-Create YAML extract that points the workflow at the minio bucket
+Create YAML extract to patch on-line demo
 
 ```
 cat <<END > repo.yaml
