@@ -52,7 +52,7 @@ Create YAML extract to patch on-line demo
 cat <<END > repo.yaml
 spec:
   artifactRepositoryRef:
-    key: minio
+    key: repo1
 END
 
 ```
