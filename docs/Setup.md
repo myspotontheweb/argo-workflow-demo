@@ -1,3 +1,4 @@
+
 Table of Contents
 =================
 
@@ -6,13 +7,13 @@ Table of Contents
       * [Software](#software)
       * [Cluster](#cluster)
       * [/etc/hosts](#etchosts)
-      * [Installation](#installation)
       * [Install Minio](#install-minio)
+      * [Argo Workflows   Events](#argo-workflows--events)
+      * [Configure the artifact repositories](#configure-the-artifact-repositories)
       * [CLI](#cli)
       * [Demo namespace](#demo-namespace)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
-
 
 # Setup
 
@@ -42,7 +43,49 @@ Setup IP addresses for ingress end-points
 echo "$(minikube ip) argo.test minio.test" | sudo tee -a /etc/hosts
 ```
 
-## Installation
+## Install Minio
+
+Add helm repo
+
+```
+helm repo add minio https://helm.min.io/
+```
+
+Helm chart custom settings
+
+```
+cat <<END > values.yaml
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+  - minio.test
+accessKey: XXXXXXXXXX
+secretKey: YYYYYYYYYY
+buckets:
+- name: repo1
+  policy: none
+  purge: false
+- name: repo2
+  policy: none
+  purge: false
+END
+```
+
+Install minio
+
+```
+kubectl create ns minio
+helm install minio minio/minio -n minio -f values.yaml
+```
+
+WebUI available at:
+
+* http://minio.test
+
+
+## Argo Workflows + Events
 
 Argo Workflows
 
@@ -85,47 +128,48 @@ WebUI available at:
 
 * http://argo.test
 
-
-## Install Minio
-
-Add helm repo
+##  Configure the artifact repositories
 
 ```
-helm repo add minio https://helm.min.io/
-```
-
-Helm chart custom settings
-
-```
-cat <<END > values.yaml
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-  hosts:
-  - minio.test
-accessKey: XXXXXXXXXX
-secretKey: YYYYYYYYYY
-buckets:
-- name: demo1
-  policy: none
-  purge: false
-- name: demo2
-  policy: none
-  purge: false
+kubectl -n argo apply -f - <<END
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-repositories
+data:
+  repo1: |
+    s3:
+      bucket: repo1
+      endpoint: minio.minio:9000
+      insecure: true
+      accessKeySecret:
+        name: artifact-repositories
+        key: accessKey
+      secretKeySecret:
+        name: artifact-repositories
+        key: secretKey
+  repo2: |
+    s3:
+      bucket: repo2
+      endpoint: minio.minio:9000
+      insecure: true
+      accessKeySecret:
+        name: artifact-repositories
+        key: accessKey
+      secretKeySecret:
+        name: artifact-repositories
+        key: secretKey
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: artifact-repositories
+stringData:
+  accessKey: XXXXXXXXXX
+  secretKey: YYYYYYYYYY
 END
 ```
-
-Install minio
-
-```
-kubectl create ns minio
-helm install minio minio/minio -n minio -f values.yaml
-```
-
-WebUI available at:
-
-* http://minio.test
 
 ## CLI
 
