@@ -46,11 +46,6 @@ Argo Events
 ```
 kubectl create namespace argo-events
 kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install.yaml
-```
-
-Argo eventbus examples
-
-```
 kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml
 ```
 
