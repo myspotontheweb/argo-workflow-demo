@@ -40,12 +40,6 @@ Source workflow
 
 * [examples/artifact-passing.yaml](https://github.com/argoproj/argo/blob/master/examples/artifact-passing.yaml)
 
-This demo needs credentials to access the artifact repositories
-
-```
-kubectl create secret generic artifact-repositories --from-literal=accessKey=XXXXXXXXXX --from-literal=secretKey=YYYYYYYYYY
-```
-
 Create YAML extract to patch on-line demo
 
 ```
