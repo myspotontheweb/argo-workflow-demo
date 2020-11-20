@@ -2,9 +2,11 @@
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Running workflows](#running-workflows)
       * [Hello world](#hello-world)
       * [Artifact passing](#artifact-passing)
+      * [Argo Events](#argo-events)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
