@@ -57,18 +57,18 @@ data:
       insecure: true
       accessKeySecret:
         name: my-minio-cred
-        key: accesskey
+        key: accessKey
       secretKeySecret:
         name: my-minio-cred
-        key: secretkey
+        key: secretKey
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: my-minio-cred
 stringData:
-  accesskey: XXXXXXXXXX
-  secretkey: YYYYYYYYYY
+  accessKey: XXXXXXXXXX
+  secretKey: YYYYYYYYYY
 END
 ```
 
