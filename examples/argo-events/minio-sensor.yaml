@@ -5,7 +5,7 @@ metadata:
 spec:
   eventBusName: nats
   template:
-    serviceAccountName: argo-events-sa
+    serviceAccountName: default
   dependencies:
     - name: test-dep
       eventSourceName: minio
