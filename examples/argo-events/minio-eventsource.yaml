@@ -7,7 +7,7 @@ spec:
   minio:
     example:
       bucket:
-        name: demo1
+        name: repo2
       endpoint: minio.minio:9000
       # Visit https://docs.minio.io/docs/minio-bucket-notification-guide.html
       events:
@@ -15,8 +15,8 @@ spec:
         - s3:ObjectRemoved:Delete
       insecure: true
       accessKey:
-        name: my-minio-cred
+        name: artifact-repositories
         key: accessKey
       secretKey:
-        name: my-minio-cred
+        name: artifact-repositories
         key: secretKey
