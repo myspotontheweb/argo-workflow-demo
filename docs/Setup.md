@@ -36,6 +36,10 @@ minikube start --driver=docker --kubernetes-version=v1.16.15
 minikube addons enable ingress
 ```
 
+Notes:
+
+* There is [open issue](https://github.com/kubernetes/minikube/issues/7332) running the ingress addon on MacOs. As a work-around perhaps run minikube using the [hyperkit driver](https://minikube.sigs.k8s.io/docs/drivers/hyperkit/)
+
 ## /etc/hosts
 
 Setup IP addresses for ingress end-points
